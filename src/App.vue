@@ -191,7 +191,7 @@ const searchKeywords = ref([
     'start playing',
     'real cash',
     'high RTP',
-    'best odds', 
+    'best odds',
     'odds',
     'stake', 'stakes',
     'return to player',
@@ -320,6 +320,12 @@ const getSearchableContent = (post) => {
 
     // Add body
     content += post.body || '';
+    content += ' ';
+
+    // Add book call text
+    content += post.bookCallBoldText || '';
+    content += ' ';
+    content += post.bookCallRegularText || '';
     content += ' ';
 
     // Add meta information
@@ -609,13 +615,13 @@ const generateHTMLReport = () => {
         <div class="keywords-section">
             <h2>Keywords to Search For</h2>
             <div class="keywords-list">`;
-    
+
     searchKeywords.value.forEach(keyword => {
         html += `<span class="keyword-tag">${keyword}</span>`;
     });
-    
+
     html += `</div></div><hr />`;
-    
+
     // Overall Statistics
     html += `<div class="statistics-section">
             <h2>Overall Statistics</h2>
@@ -646,16 +652,16 @@ const generateHTMLReport = () => {
             <p>In posts: <strong>${stat.postsWithKeyword}</strong> / ${parsedResults.value.length}</p>
         </div>`;
     });
-    
+
     html += `</div></div><hr />`;
-    
+
     // Post Results
     html += `<div class="results-section">
             <h2>Post Analysis Results (${parsedResults.value.length})</h2>
             <div class="sorting-info">
                 Currently sorted by: <strong>${sortLabels[sortBy.value]}</strong> (${sortOrder.value === 'desc' ? 'Highest to Lowest' : 'Lowest to Highest'})
             </div>`;
-    
+
     sortedResults.value.forEach(result => {
         const postUrl = `https://igaming.mydigicode.com/blog/${result.slug}/`;
         html += `<div class="post-result">
@@ -670,26 +676,26 @@ const generateHTMLReport = () => {
                         <span class="badge">Total matches: ${result.totalMatches}</span>
                     </div>
                 </div>`;
-        
+
         if (Object.keys(result.foundKeywords).length > 0) {
             html += `<div class="found-keywords">
                     <strong>Found keywords:</strong>
                     <div class="keywords-matches">`;
-            
+
             Object.entries(result.foundKeywords).forEach(([keyword, count]) => {
                 html += `<span class="match-tag">${keyword}: <strong>${count}</strong></span>`;
             });
-            
+
             html += `</div></div>`;
         } else {
             html += `<div class="no-matches"><em>No keywords found</em></div>`;
         }
-        
+
         html += `</div>`;
     });
-    
+
     html += `</div></div></body></html>`;
-    
+
     return html;
 };
 
@@ -702,11 +708,7 @@ onMounted(() => {
     <div class="dev-blog-parser">
         <div class="header-row">
             <h1>Blog Content Parser</h1>
-            <button 
-                v-if="parsedResults.length > 0" 
-                @click="exportToHTML" 
-                class="export-btn"
-            >
+            <button v-if="parsedResults.length > 0" @click="exportToHTML" class="export-btn">
                 📄 Export as HTML
             </button>
         </div>
@@ -747,7 +749,8 @@ onMounted(() => {
                     </div>
                     <div class="summary-stat-card">
                         <h3>Posts with Matches</h3>
-                        <p><strong>{{ overallSummary.totalPostsWithMatches }}</strong> / {{ parsedResults.length }} posts have at least one keyword match</p>
+                        <p><strong>{{ overallSummary.totalPostsWithMatches }}</strong> / {{ parsedResults.length }}
+                            posts have at least one keyword match</p>
                     </div>
                     <div class="summary-stat-card">
                         <h3>Keywords Analyzed</h3>
@@ -756,7 +759,8 @@ onMounted(() => {
                 </div>
                 <h3>Keyword Breakdown:</h3>
                 <div class="stats-grid">
-                    <div v-for="(stat, keyword) in totalStatistics" :key="keyword" :class="['stat-card', { 'not-found': stat.totalCount === 0 }]">
+                    <div v-for="(stat, keyword) in totalStatistics" :key="keyword"
+                        :class="['stat-card', { 'not-found': stat.totalCount === 0 }]">
                         <h3>{{ keyword }}</h3>
                         <p>Found: <strong>{{ stat.totalCount }}</strong> times</p>
                         <p>In posts: <strong>{{ stat.postsWithKeyword }}</strong> / {{ parsedResults.length }}</p>
@@ -775,87 +779,70 @@ onMounted(() => {
             </h2>
 
             <div v-show="sectionsExpanded.results">
-            <!-- Sorting Controls -->
-            <div class="sorting-controls">
-                <div class="sorting-group">
-                    <label>Sort by:</label>
-                    <div class="sort-buttons">
-                        <button 
-                            @click="setSorting('date', 'desc')"
-                            :class="{ active: sortBy === 'date' && sortOrder === 'desc' }"
-                            class="sort-btn"
-                        >
-                            Date ↓
-                        </button>
-                        <button 
-                            @click="setSorting('date', 'asc')"
-                            :class="{ active: sortBy === 'date' && sortOrder === 'asc' }"
-                            class="sort-btn"
-                        >
-                            Date ↑
-                        </button>
-                        <button 
-                            @click="setSorting('keywords', 'desc')"
-                            :class="{ active: sortBy === 'keywords' && sortOrder === 'desc' }"
-                            class="sort-btn"
-                        >
-                            Keywords Count ↓
-                        </button>
-                        <button 
-                            @click="setSorting('keywords', 'asc')"
-                            :class="{ active: sortBy === 'keywords' && sortOrder === 'asc' }"
-                            class="sort-btn"
-                        >
-                            Keywords Count ↑
-                        </button>
-                        <button 
-                            @click="setSorting('matches', 'desc')"
-                            :class="{ active: sortBy === 'matches' && sortOrder === 'desc' }"
-                            class="sort-btn"
-                        >
-                            Total Matches ↓
-                        </button>
-                        <button 
-                            @click="setSorting('matches', 'asc')"
-                            :class="{ active: sortBy === 'matches' && sortOrder === 'asc' }"
-                            class="sort-btn"
-                        >
-                            Total Matches ↑
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <div v-for="result in sortedResults" :key="result.id" class="post-result">
-                <div class="post-header">
-                    <div class="post-title-row">
-                        <h3>
-                            <a :href="`https://igaming.mydigicode.com/blog/${result.slug}/`" class="post-link" target="_blank" rel="noopener noreferrer">
-                                {{ result.title }}
-                            </a>
-                        </h3>
-                        <span class="post-date">{{ new Date(result.createdAt).toLocaleDateString() }}</span>
-                    </div>
-                    <div class="post-meta">
-                        <span class="badge">ID: {{ result.id }}</span>
-                        <span class="badge">Keywords found: {{ result.matchedKeywordsCount }}</span>
-                        <span class="badge">Total matches: {{ result.totalMatches }}</span>
+                <!-- Sorting Controls -->
+                <div class="sorting-controls">
+                    <div class="sorting-group">
+                        <label>Sort by:</label>
+                        <div class="sort-buttons">
+                            <button @click="setSorting('date', 'desc')"
+                                :class="{ active: sortBy === 'date' && sortOrder === 'desc' }" class="sort-btn">
+                                Date ↓
+                            </button>
+                            <button @click="setSorting('date', 'asc')"
+                                :class="{ active: sortBy === 'date' && sortOrder === 'asc' }" class="sort-btn">
+                                Date ↑
+                            </button>
+                            <button @click="setSorting('keywords', 'desc')"
+                                :class="{ active: sortBy === 'keywords' && sortOrder === 'desc' }" class="sort-btn">
+                                Keywords Count ↓
+                            </button>
+                            <button @click="setSorting('keywords', 'asc')"
+                                :class="{ active: sortBy === 'keywords' && sortOrder === 'asc' }" class="sort-btn">
+                                Keywords Count ↑
+                            </button>
+                            <button @click="setSorting('matches', 'desc')"
+                                :class="{ active: sortBy === 'matches' && sortOrder === 'desc' }" class="sort-btn">
+                                Total Matches ↓
+                            </button>
+                            <button @click="setSorting('matches', 'asc')"
+                                :class="{ active: sortBy === 'matches' && sortOrder === 'asc' }" class="sort-btn">
+                                Total Matches ↑
+                            </button>
+                        </div>
                     </div>
                 </div>
 
-                <div v-if="Object.keys(result.foundKeywords).length > 0" class="found-keywords">
-                    <strong>Found keywords:</strong>
-                    <div class="keywords-matches">
-                        <span v-for="(count, keyword) in result.foundKeywords" :key="keyword" class="match-tag">
-                            {{ keyword }}: <strong>{{ count }}</strong>
-                        </span>
+                <div v-for="result in sortedResults" :key="result.id" class="post-result">
+                    <div class="post-header">
+                        <div class="post-title-row">
+                            <h3>
+                                <a :href="`https://igaming.mydigicode.com/blog/${result.slug}/`" class="post-link"
+                                    target="_blank" rel="noopener noreferrer">
+                                    {{ result.title }}
+                                </a>
+                            </h3>
+                            <span class="post-date">{{ new Date(result.createdAt).toLocaleDateString() }}</span>
+                        </div>
+                        <div class="post-meta">
+                            <span class="badge">ID: {{ result.id }}</span>
+                            <span class="badge">Keywords found: {{ result.matchedKeywordsCount }}</span>
+                            <span class="badge">Total matches: {{ result.totalMatches }}</span>
+                        </div>
+                    </div>
+
+                    <div v-if="Object.keys(result.foundKeywords).length > 0" class="found-keywords">
+                        <strong>Found keywords:</strong>
+                        <div class="keywords-matches">
+                            <span v-for="(count, keyword) in result.foundKeywords" :key="keyword" class="match-tag">
+                                {{ keyword }}: <strong>{{ count }}</strong>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div v-else class="no-matches">
+                        <em>No keywords found</em>
                     </div>
                 </div>
-
-                <div v-else class="no-matches">
-                    <em>No keywords found</em>
-                </div>
-            </div>
             </div>
         </div>
 
@@ -1193,7 +1180,7 @@ onMounted(() => {
     padding: 6px 14px;
     border-radius: 15px;
     font-size: 13px;
-   
+
     display: flex;
     align-items: center;
     justify-content: center;
