@@ -1,0 +1,302 @@
+:root {
+  /** --- LAYOUT --- */
+
+  /** base layout */
+  --base-layout-width: 1248px;
+  --page-layot-sides-padding: 32px;
+
+  --page-layout-width: calc(var(--base-layout-width) + var(--page-layot-sides-padding) * 2);
+
+  /** post layout */
+  --post-base-layout-width: 834px;
+  --post-layot-sides-padding: 32px;
+  --post-layout-width: calc(var(--post-base-layout-width) + var(--post-layot-sides-padding) * 2);
+
+  /** --- COLORS --- */
+
+  --white: #ffffff;
+  --black: #000000;
+  --purple: #813e8a;
+  --green: #80c242;
+  --yellow: #ffcd0c;
+  --dark-green: #669b35;
+  --blue: #3d5da9;
+  --grey: #999;
+  --border-grey: #dbdbdb;
+
+  /** --- ADAPTIVE BREAKPOINTS --- */
+
+  /** we can't use this variables in media queries, 
+    it is just for your information witch breakpoints we are using in site */
+  --tablet: 1023px;
+  --mobile: 676px;
+}
+
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+  display: block;
+}
+body {
+  line-height: 1;
+}
+ol,
+ul {
+  list-style: none;
+}
+blockquote,
+q {
+  quotes: none;
+}
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+  content: '';
+  content: none;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+/**
+* -------------- CUSTOM RULES --------------
+*/
+
+html {
+  overflow-x: hidden;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+@media screen and (max-width: 676px) {
+  pre {
+    white-space: break-spaces;
+    word-break: break-word;
+  }
+}
+
+body.calendly-opened {
+  max-height: 100vh;
+  overflow: hidden;
+}
+
+body.mobile-menu-open {
+  max-height: 100vh;
+  overflow: hidden;
+}
+
+button {
+  background-color: transparent;
+  border-style: none;
+}
+
+/**
+* -------------- GLOBAL CLASSES--------------
+*/
+
+.general-container {
+  max-width: var(--page-layout-width);
+  padding-left: var(--page-layot-sides-padding);
+  padding-right: var(--page-layot-sides-padding);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.post-general-container {
+  max-width: var(--post-layout-width);
+  padding-left: var(--post-layot-sides-padding);
+  padding-right: var(--post-layot-sides-padding);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.purple {
+  color: var(--purple);
+}
+
+.text-centered {
+  text-align: center;
+}
+
+.text-centered-without-mobile {
+  text-align: center;
+}
+
+.centered {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.centered-without-mobile {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.mb-8 {
+  margin-bottom: 8px;
+}
+
+.mb-12 {
+  margin-bottom: 12px;
+}
+
+.mb-20 {
+  margin-bottom: 20px;
+}
+
+.mb-24 {
+  margin-bottom: 24px;
+}
+
+.mt-8 {
+  margin-top: 8px;
+}
+
+.mt-24 {
+  margin-top: 24px;
+}
+
+.mt-32 {
+  margin-top: 32px;
+}
+
+
+.max-width-720 {
+  max-width: 720px;
+}
+
+.text-pretty {
+  text-wrap: pretty;
+}
+
+.text-balance {
+  text-wrap: balance;
+}
+
+@media screen and (max-width: 1023px) {
+  .skip-br-on-tablet br {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 676px) {
+  .skip-br-on-mobile br {
+    display: none;
+  }
+
+  .centered-without-mobile {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .text-centered-without-mobile {
+    text-align: left;
+  }
+}
+
